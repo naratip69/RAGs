@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=root1234
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  pgvector:
+    image: pgvector/pgvector:pg17
+    container_name: pgvector
+    depends_on:
+      - postgres
+    environment:
+      - PGVECTOR_USER=admin
+      - PGVECTOR_PASSWORD=root1234
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    ports:
+      - 3080:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=root1234
+
+volumes:
+  pgdata:
